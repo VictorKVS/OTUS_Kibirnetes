@@ -1,0 +1,101 @@
+id,owasp_category,lesson,threat,primary_control,source
+DST-001,K01,2,"privileged-контейнер","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K01",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-002,K01,2,"запуск от root","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K01",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-003,K01,2,"разрешённый privilege escalation","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K01",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-004,K01,2,"лишние Linux capabilities","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K01",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-005,K01,2,"отсутствие seccomp","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K01",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-006,K01,2,"записываемая корневая ФС","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K01",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-007,K01,2,"hostPID","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K01",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-008,K01,2,"hostIPC","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K01",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-009,K01,2,"hostNetwork","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K01",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-010,K01,2,"hostPath-монтирование","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K01",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-011,K02,7,"cluster-admin обычному пользователю","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K02",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-012,K02,7,"wildcard verbs в RBAC","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K02",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-013,K02,7,"wildcard resources в RBAC","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K02",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-014,K02,7,"доступ к secrets без необходимости","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K02",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-015,K02,7,"доступ на создание pods/exec","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K02",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-016,K02,7,"неограниченное impersonate","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K02",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-017,K02,7,"массовый доступ к serviceaccounts","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K02",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-018,K02,7,"наследование чужих RoleBindings","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K02",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-019,K02,7,"общая сервисная учётная запись","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K02",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-020,K02,7,"токен с чрезмерными привилегиями","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K02",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-021,K03,4,"секрет в Git","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K03",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-022,K03,4,"секрет в образе контейнера","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K03",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-023,K03,4,"пароль в ConfigMap","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K03",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-024,K03,4,"секрет в переменных CI","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K03",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-025,K03,4,"отсутствие ротации секретов","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K03",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-026,K03,4,"нешифрованный etcd с секретами","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K03",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-027,K03,4,"доступ на чтение секретов всем","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K03",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-028,K03,4,"вывод секретов в логи","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K03",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-029,K03,4,"небезопасная передача секретов","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K03",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-030,K03,4,"утечка токена serviceaccount","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K03",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-031,K04,7,"нет политики запрета privileged","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K04",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-032,K04,7,"нет политики restricted Pod Security","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K04",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-033,K04,7,"не проверяются подписи образов","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K04",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-034,K04,7,"допущены непроверенные реестры","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K04",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-035,K04,7,"нет enforce-политик admission","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K04",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-036,K04,7,"отсутствует контроль namespace","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K04",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-037,K04,7,"нет контроля исключений","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K04",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-038,K04,7,"policy в audit вместо enforce","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K04",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-039,K04,7,"обход ограничений через exemption","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K04",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-040,K04,7,"отсутствует тестирование политик","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K04",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-041,K05,3,"открытые соединения между namespace","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K05",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-042,K05,3,"нет default-deny ingress","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K05",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-043,K05,3,"нет default-deny egress","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K05",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-044,K05,3,"неконтролируемый egress в интернет","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K05",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-045,K05,3,"открыт внутренний admin API","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K05",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-046,K05,3,"экспонирован Service NodePort","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K05",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-047,K05,3,"неограниченный доступ к DB","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K05",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-048,K05,3,"доступ Pod к metadata API","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K05",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-049,K05,3,"небезопасный DNS egress","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K05",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-050,K05,3,"обход сетевой политики из-за CNI","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K05",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-051,K06,1,"API Server доступен из интернета","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K06",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-052,K06,1,"etcd доступен извне","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K06",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-053,K06,1,"kubelet API открыт","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K06",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-054,K06,1,"неавторизованный dashboard","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K06",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-055,K06,1,"лишний публичный LoadBalancer","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K06",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-056,K06,1,"порт метрик без защиты","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K06",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-057,K06,1,"доступ к debug endpoint","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K06",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-058,K06,1,"общедоступный порт приложений","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K06",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-059,K06,1,"неконтролируемый port-forward","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K06",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-060,K06,1,"неограниченные IP на ingress","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K06",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-061,K07,7,"необновлённый kube-apiserver","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K07",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-062,K07,7,"уязвимый kubelet","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K07",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-063,K07,7,"устаревший containerd","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K07",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-064,K07,7,"уязвимый CNI","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K07",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-065,K07,7,"уязвимый ingress-controller","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K07",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-066,K07,7,"нет проверки CIS Benchmark","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K07",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-067,K07,7,"небезопасные параметры etcd","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K07",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-068,K07,7,"известная CVE в образе","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K07",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-069,K07,7,"нефиксированная версия образа","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K07",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-070,K07,7,"недоверенная цепочка поставки","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K07",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-071,K08,7,"доступ к cloud metadata","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K08",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-072,K08,7,"избыточные IAM роли workload","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K08",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-073,K08,7,"утечка ключа облака","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K08",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-074,K08,7,"неограниченный доступ к object storage","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K08",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-075,K08,7,"общий cloud service account","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K08",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-076,K08,7,"нет workload identity separation","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K08",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-077,K08,7,"доступ в management plane","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K08",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-078,K08,7,"пересечение сетей prod/dev","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K08",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-079,K08,7,"доступ к cloud secrets","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K08",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-080,K08,7,"чрезмерные права на создание VM","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K08",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-081,K09,1,"общий kubeconfig","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K09",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-082,K09,1,"долгоживущий токен","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K09",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-083,K09,1,"отсутствие MFA у администратора","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K09",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-084,K09,1,"отсутствие контроля сертификатов","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K09",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-085,K09,1,"анонимная аутентификация API","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K09",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-086,K09,1,"некорректная OIDC интеграция","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K09",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-087,K09,1,"устаревшая сервисная учётка","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K09",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-088,K09,1,"компрометация exec-плагина","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K09",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-089,K09,1,"передача kubeconfig в чате","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K09",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-090,K09,1,"отсутствие отзыва доступов","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K09",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-091,K10,5,"отсутствует audit log API","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K10",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-092,K10,5,"не собираются логи Pod","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K10",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-093,K10,5,"нет контроля изменений RBAC","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K10",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-094,K10,5,"нет алертов на privileged Pod","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K10",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-095,K10,5,"нет событий сетевых блокировок","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K10",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-096,K10,5,"не контролируются изменения secrets","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K10",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-097,K10,5,"нет корреляции событий","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K10",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-098,K10,5,"нет защиты журналов от удаления","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K10",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-099,K10,5,"нет метрик отказов узлов","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K10",https://owasp.github.io/www-project-kubernetes-top-ten/
+DST-100,K10,5,"не проверяется полнота логирования","Проверить конфигурацию и внедрить меру минимальных привилегий, изоляции или мониторинга по K10",https://owasp.github.io/www-project-kubernetes-top-ten/
