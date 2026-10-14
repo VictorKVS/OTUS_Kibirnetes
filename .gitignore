@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+# Local secrets and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+kubeconfig
+kubeconfig.*
+# Reports / local evidence
+security-report.json
+DZ_01/security-report.json
+.local/
+*.log
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
