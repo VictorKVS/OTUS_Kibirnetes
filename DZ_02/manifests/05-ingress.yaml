@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: network-nginx-ingress
+  namespace: otus-k8s-dz02
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: dz02.otus.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: network-nginx
+                port:
+                  number: 80

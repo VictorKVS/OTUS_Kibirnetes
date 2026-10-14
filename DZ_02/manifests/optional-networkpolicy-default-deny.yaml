@@ -1,0 +1,12 @@
+# OPTIONAL SECURITY EXPERIMENT. Do not apply with the base manifests:
+# it intentionally blocks inbound traffic and may make the demo unavailable.
+# Observe impact, then add narrowly scoped allow policy before enforcing in real systems.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: otus-k8s-dz02
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
