@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "description": "Безопасные негативные тесты: модель поведения разрешённых операций, не реальные воздействия на кластер",
+  "scenarios": [
+    {
+      "id": "NEG-001",
+      "action": "minikube.delete",
+      "context": {
+        "target": "production",
+        "approval": false
+      },
+      "expect": "deny",
+      "reason": "Нельзя удалять неучебную среду"
+    },
+    {
+      "id": "NEG-002",
+      "action": "minikube.delete",
+      "context": {
+        "target": "otus-k8s",
+        "approval": false
+      },
+      "expect": "require_approval",
+      "reason": "Изменение учебного кластера требует подтверждения"
+    },
+    {
+      "id": "NEG-003",
+      "action": "minikube.healthcheck",
+      "context": {
+        "target": "otus-k8s",
+        "approval": false
+      },
+      "expect": "allow_read_only",
+      "reason": "Безопасная диагностика"
+    },
+    {
+      "id": "NEG-004",
+      "action": "kubectl.apply",
+      "context": {
+        "target": "otus-k8s",
+        "namespace": "production",
+        "approval": true
+      },
+      "expect": "deny",
+      "reason": "Целевая область вне разрешённой лаборатории"
+    },
+    {
+      "id": "NEG-005",
+      "action": "kubectl.apply",
+      "context": {
+        "target": "otus-k8s",
+        "namespace": "otus-k8s-dz01",
+        "approval": false
+      },
+      "expect": "require_approval",
+      "reason": "Любое изменение требует проверки и утверждения"
+    },
+    {
+      "id": "NEG-006",
+      "action": "shell.exec",
+      "context": {
+        "target": "otus-k8s",
+        "approval": true
+      },
+      "expect": "deny",
+      "reason": "Произвольные команды запрещены"
+    },
+    {
+      "id": "NEG-007",
+      "action": "minikube.healthcheck",
+      "context": {
+        "target": "otus-k8s",
+        "duplicate": true
+      },
+      "expect": "allow_read_only",
+      "reason": "Повторная диагностика безопасна"
+    },
+    {
+      "id": "NEG-008",
+      "action": "kubectl.apply",
+      "context": {
+        "target": "otus-k8s",
+        "namespace": "otus-k8s-dz01",
+        "approval": true,
+        "policy_ok": false
+      },
+      "expect": "deny",
+      "reason": "Не прошла security policy"
+    },
+    {
+      "id": "NEG-009",
+      "action": "kubectl.apply",
+      "context": {
+        "target": "otus-k8s",
+        "namespace": "otus-k8s-dz01",
+        "approval": true,
+        "policy_ok": true
+      },
+      "expect": "allow_guarded",
+      "reason": "Подтверждённая операция в лаборатории"
+    },
+    {
+      "id": "NEG-010",
+      "action": "kubectl.apply",
+      "context": {
+        "target": "otus-k8s",
+        "namespace": "otus-k8s-dz01",
+        "approval": true,
+        "policy_ok": true,
+        "runner_available": false
+      },
+      "expect": "fail_closed",
+      "reason": "Нет исполнителя: нельзя объявлять успех"
+    }
+  ]
+}
