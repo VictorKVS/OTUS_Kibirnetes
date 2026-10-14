@@ -29,7 +29,7 @@ jobs:
         run: python -m unittest discover -s SECURITY/tests -v
       - name: Check for obvious tokens in tracked files
         run: |
-          if git grep -nE '-----BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY-----|ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}' -- . ':!*.lock'; then
+          if git grep -nE -e '-----BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY-----|ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}' -- . ':!*.lock'; then
             echo "::error::Potential credential in tracked files"
             exit 1
           fi
