@@ -1,77 +1,99 @@
 # =====================================================================
-# FATHER ENGINEERING PLATFORM | OTUS KUBERNETES
-# SCRIPT:      RUN_LESSON03_STEP01.ps1
-# LESSON:      03 - Kubernetes Networking
-# STEP:        01 - Read-only inspection and isolated namespace
-# TARGET:      kind-otus-dz01 / otus-k8s-dz02
-# EVIDENCE:    reports/lesson03/step01/latest.txt
-# SECURITY:    Allowlisted kubectl output only; no tokens or kubeconfig
+# FATHER ENGINEERING PLATFORM
+# PROJECT: OTUS Kubernetes / FATHER DevSecOps
+# LESSON: 03 - Networking
+# STEP: 01 - Inspect and create isolated DZ-02 namespace
+# MODE: Safe diagnostics; only namespace otus-k8s-dz02 may be created
+# OUTPUT: reports/lesson03/step01/latest.txt
+# SECURITY: No kubeconfig, tokens, secrets or full environment dumps
 # =====================================================================
 [CmdletBinding()]
 param()
-$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Continue'
 $Root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $Ctx = 'kind-otus-dz01'
 $Ns = 'otus-k8s-dz02'
-$EvidenceRel = 'reports/lesson03/step01/latest.txt'
-$Evidence = Join-Path $Root $EvidenceRel
-$dir = Split-Path $Evidence -Parent
-New-Item -ItemType Directory -Force -Path $dir | Out-Null
-$lines = New-Object System.Collections.Generic.List[string]
-$script:failed = $false
-function Add-Log([string]$text) {
-    Write-Host $text
-    [void]$lines.Add($text)
+$Rel = 'reports/lesson03/step01/latest.txt'
+$Out = Join-Path $Root 'reports\lesson03\step01\latest.txt'
+$Log = New-Object 'System.Collections.Generic.List[string]'
+$HasFailure = $false
+
+function Say([string]$Message) {
+    Write-Host $Message
+    [void]$script:Log.Add($Message)
 }
-function Run-Kubectl([string]$label, [string[]]$arguments) {
-    Add-Log ("[${label}] kubectl " + ($arguments -join ' '))
-    $output = & kubectl @arguments 2>&1
-    $code = $LASTEXITCODE
-    foreach ($line in $output) { Add-Log ([string]$line) }
-    Add-Log ("EXIT_CODE=${code}")
-    if ($code -ne 0) { $script:failed = $true }
-}
-Add-Log '====================================================================='
-Add-Log 'FATHER | OTUS Kubernetes | Lesson 03 | Step 01'
-Add-Log 'Purpose: verify kind cluster, networking and DZ-02 namespace'
-Add-Log 'Mode: allowlisted diagnostics, namespace-only creation'
-Add-Log ('UTC: ' + [DateTime]::UtcNow.ToString('yyyy-MM-ddTHH:mm:ssZ'))
-Add-Log ('TargetContext: ' + $Ctx)
-Add-Log ('TargetNamespace: ' + $Ns)
-Add-Log '====================================================================='
-# Preflight: hard stop if wrong context or unavailable tooling.
-if (-not (Get-Command kubectl -ErrorAction SilentlyContinue)) { throw 'kubectl missing' }
-if (-not (Get-Command git -ErrorAction SilentlyContinue)) { throw 'git missing' }
-$current = (& kubectl config current-context 2>&1)
-# Every kubectl call uses explicit --context; no global context switch.
-Run-Kubectl '01-NODES' @('--context', $Ctx, 'get', 'nodes', '-o', 'wide')
-Run-Kubectl '02-KUBE-SYSTEM-PODS' @('--context', $Ctx, '-n', 'kube-system', 'get', 'pods')
-Run-Kubectl '03-INGRESS-CLASSES' @('--context', $Ctx, 'get', 'ingressclass')
-# Isolated namespace idempotent operation; no changes to DZ-01.
-if (-not $script:failed) {
-    Run-Kubectl '04-ENSURE-NAMESPACE' @('--context', $Ctx, 'create', 'namespace', $Ns, '--dry-run=client', '-o', 'name')
-    if (-not $script:failed) {
-        $present = & kubectl --context $Ctx get namespace $Ns -o name 2>$null
-        if ($LASTEXITCODE -ne 0) {
-            Run-Kubectl '05-CREATE-NAMESPACE' @('--context', $Ctx, 'create', 'namespace', $Ns)
-        } else { Add-Log ('[05-NAMESPACE] already exists: ' + $Ns) }
+function Kube([string]$Step, [string[]]$KubectlArgs) {
+    Say ('[' + $Step + '] kubectl ' + ($KubectlArgs -join ' '))
+    try {
+        $result = & kubectl @KubectlArgs 2>&1
+        $code = $LASTEXITCODE
+        foreach ($item in $result) {
+            $line = [string]$item
+            # Allowlisted commands only. Avoid accidental token/error dumps.
+            if ($line -match '(?i)token=|authorization:|password=|client-key-data:|client-certificate-data:') {
+                Say '[REDACTED: possible credential]'
+            } else { Say $line }
+        }
+        Say ('EXIT_CODE=' + $code)
+        if ($code -ne 0) { $script:HasFailure = $true }
+        return $code
+    } catch {
+        Say ('[ERROR] ' + $_.Exception.GetType().Name)
+        $script:HasFailure = $true
+        return 1
     }
 }
-Run-Kubectl '06-NAMESPACES' @('--context', $Ctx, 'get', 'namespaces')
-Add-Log ('RESULT=' + $(if ($script:failed) { 'FAIL' } else { 'PASS' }))
-# Save only allowlisted output above; never dump env, Kubernetes secrets, kubeconfig.
-[System.IO.File]::WriteAllLines($Evidence, $lines.ToArray(), (New-Object System.Text.UTF8Encoding($false)))
-Add-Log ('EVIDENCE: ' + $Evidence)
-& git -C $Root add -- $EvidenceRel
-if ($LASTEXITCODE -ne 0) { throw 'git add failed' }
-& git -C $Root diff --cached --quiet -- $EvidenceRel
-if ($LASTEXITCODE -eq 0) {
-    Add-Log '[GIT] evidence unchanged; nothing to commit'
-} else {
-    & git -C $Root commit -m 'evidence(k8s): refresh lesson03 step01 diagnostics' -- $EvidenceRel
-    if ($LASTEXITCODE -ne 0) { throw 'git commit failed; configure git user.name and user.email' }
+Say '====================================================================='
+Say 'FATHER | OTUS KUBERNETES | LESSON 03 | STEP 01'
+Say ('UTC=' + [DateTime]::UtcNow.ToString('yyyy-MM-ddTHH:mm:ssZ'))
+Say ('CONTEXT=' + $Ctx)
+Say ('NAMESPACE=' + $Ns)
+Say '====================================================================='
+
+$kubectlExists = [bool](Get-Command kubectl -ErrorAction SilentlyContinue)
+$gitExists = [bool](Get-Command git -ErrorAction SilentlyContinue)
+if (-not $kubectlExists) { Say '[FAIL] kubectl is not installed'; $HasFailure = $true }
+if (-not $gitExists) { Say '[WARN] git is not available; local log will remain'; $HasFailure = $true }
+if ($kubectlExists) {
+    $nodesCode = Kube '01-NODES' @('--context',$Ctx,'get','nodes','-o','wide')
+    if ($nodesCode -eq 0) {
+        $null = Kube '02-NETWORK' @('--context',$Ctx,'-n','kube-system','get','pods')
+        # No ingressclass is normal for an unconfigured cluster.
+        $null = Kube '03-INGRESS' @('--context',$Ctx,'get','ingressclass')
+        # Avoid treating absence of ingressclass as a blocking error.
+        $currentNs = & kubectl --context $Ctx get namespace $Ns -o name 2>$null
+        if ($LASTEXITCODE -eq 0) {
+            Say ('[04-NAMESPACE] Already exists: ' + $Ns)
+        } else {
+            $null = Kube '04-CREATE-NAMESPACE' @('--context',$Ctx,'create','namespace',$Ns)
+        }
+        $null = Kube '05-NAMESPACES' @('--context',$Ctx,'get','namespaces')
+    } else { Say '[WARN] Cluster unavailable; no changes attempted' }
 }
-& git -C $Root push origin HEAD:main
-if ($LASTEXITCODE -ne 0) { throw 'GitHub push failed; check Git authentication and branch synchronization' }
-Add-Log '[DONE] GitHub evidence published. Reply with 1.'
-if ($script:failed) { exit 1 }
+Say ('RESULT=' + $(if ($HasFailure) {'FAIL'} else {'PASS'}))
+New-Item -ItemType Directory -Force -Path (Split-Path $Out -Parent) | Out-Null
+[System.IO.File]::WriteAllLines($Out,$Log.ToArray(),(New-Object System.Text.UTF8Encoding($false)))
+Write-Host ('[EVIDENCE] ' + $Out)
+
+if ($gitExists) {
+    $branch = (& git -C $Root branch --show-current 2>&1)
+    if ($LASTEXITCODE -ne 0 -or $branch.Trim() -ne 'main') {
+        Write-Host ('[GIT FAIL] Expected main branch, actual: ' + $branch)
+        exit 2
+    }
+    # Pull BEFORE staging so remote script updates are fast-forwarded safely.
+    & git -C $Root pull --ff-only origin main
+    if ($LASTEXITCODE -ne 0) { Write-Host '[GIT FAIL] Pull failed; evidence is saved locally'; exit 2 }
+    & git -C $Root add -- $Rel
+    if ($LASTEXITCODE -ne 0) { Write-Host '[GIT FAIL] Add failed'; exit 2 }
+    & git -C $Root diff --cached --quiet -- $Rel
+    if ($LASTEXITCODE -ne 0) {
+        & git -C $Root commit -m 'evidence: Kubernetes lesson 03 step 01' -- $Rel
+        if ($LASTEXITCODE -ne 0) { Write-Host '[GIT FAIL] Commit failed'; exit 2 }
+    }
+    & git -C $Root push origin main
+    if ($LASTEXITCODE -ne 0) { Write-Host '[GIT FAIL] Push failed; evidence remains locally'; exit 2 }
+    Write-Host '[GITHUB PASS] Evidence published. Reply 1.'
+}
+if ($HasFailure) { exit 1 }
+exit 0
