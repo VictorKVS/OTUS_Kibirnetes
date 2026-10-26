@@ -4,34 +4,42 @@
 # PROJECT: Storage migration
 # STEP: STORAGE-02 - Backup Docker VHDX to F:
 # SAFETY: no deletion, no overwrite, no automatic shutdown
-# IMPORTANT: close Docker Desktop and run wsl --shutdown manually
+# REQUIREMENT: quit Docker Desktop and run wsl --shutdown beforehand
 # =====================================================================
 [CmdletBinding()]
 param()
 $ErrorActionPreference = 'Stop'
-$Src = Join-Path $env:LOCALAPPDATA 'Docker\wsl\disk\docker_data.vhdx'
+$Source = Join-Path $env:LOCALAPPDATA 'Docker\wsl\disk\docker_data.vhdx'
 $Base = 'F:\FATHER_INFRA\BACKUPS\Docker'
 $Stamp = Get-Date -Format 'yyyyMMdd_HHmmss'
-$Dst = Join-Path $Base ("docker_data_$Stamp.vhdx")
-$Summary = Join-Path $Base ("docker_data_$Stamp.sha256.txt")
-Write-Host '[01] Source and destination'
-if (-not (Test-Path -LiteralPath $Src -PathType Leaf)) { throw "Source missing: $Src" }
-$SourceInfo = Get-Item -LiteralPath $Src
-if (-not (Test-Path 'F:\')) { throw 'Drive F: unavailable' }
-$Volume = Get-Volume -DriveLetter F
+$DestinationDir = Join-Path $Base $Stamp
+$Destination = Join-Path $DestinationDir 'docker_data.vhdx'
+Write-Host '[01] PREFLIGHT'
+if (-not (Test-Path -LiteralPath $Source -PathType Leaf)) { throw ('Source missing: ' + $Source) }
+$SrcInfo = Get-Item -LiteralPath $Source
+$Volume = Get-Volume -DriveLetter F -ErrorAction Stop
 if ($Volume.FileSystem -ne 'NTFS' -or $Volume.HealthStatus -ne 'Healthy') { throw 'Target F: not healthy NTFS' }
-if ($Volume.SizeRemaining -lt ($SourceInfo.Length + 50GB)) { throw 'Insufficient F: capacity for backup plus 50 GB reserve' }
-if (Test-Path -LiteralPath $Dst) { throw 'Destination already exists' }
-Write-Host ('Source: {0:N2} GB' -f ($SourceInfo.Length/1GB))
-Write-Host ('Destination: ' + $Dst)
-Write-Host '[02] Ensure Docker and WSL are not running'
-$Running = @(Get-Process -Name 'com.docker.backend','Docker Desktop','vmmem','vmmemWSL' -ErrorAction SilentlyContinue)
-if ($Running.Count -gt 0) { $Running | Select-Object ProcessName,Id | Format-Table; throw 'Docker/WSL still active. Stop services gracefully and rerun.' }
-$WslList = (& wsl.exe --list --running 2>&1 | Out-String)
-if ($WslList -match '(?im)^\s*(Ubuntu|docker-desktop)\s*$') { throw 'Running WSL distributions detected. Stop them first.' }
-Write-Host '[03] Copy, no source deletion'
-New-Item -ItemType Directory -Path $Base -Force | Out-Null
-$robolog = Join-Path $Base ("copy_$Stamp.log")
-& robocopy (Split-Path $Src -Parent) $Base (Split-Path $Dst -Leaf) /R:0 /W:0 /J /COPY:DAT /NP /LOG:$robolog
-# robocopy cannot rename the source via file mask; use Copy-Item instead
-throw 'Safety stop: copy with rename needs explicit verified implementation. No source deleted.'
+if ($Volume.SizeRemaining -lt ($SrcInfo.Length + 50GB)) { throw 'Insufficient free space including 50 GB reserve' }
+if (Test-Path -LiteralPath $DestinationDir) { throw 'Backup folder already exists; refuse overwrite' }
+$processes = @(Get-Process -Name 'com.docker.backend','Docker Desktop','vmmem','vmmemWSL','vmwp' -ErrorAction SilentlyContinue)
+if ($processes.Count -gt 0) { $processes | Select-Object ProcessName,Id | Format-Table; throw 'Virtualization processes detected. Stop Docker and WSL gracefully first.' }
+$running = (& wsl.exe --list --running 2>&1 | Out-String)
+# WSL output may be UTF-16 in an interactive shell; conservative process checks above still apply.
+if ($LASTEXITCODE -ne 0) { throw 'Cannot confirm WSL status' }
+if ($running -match 'Ubuntu|docker-desktop') { throw 'WSL distributions still running' }
+Write-Host ('Source {0:N2} GB' -f ($SrcInfo.Length/1GB))
+Write-Host ('Backup destination: ' + $Destination)
+Write-Host '[02] COPYING WITH ROBOCOPY'
+New-Item -ItemType Directory -Path $DestinationDir -ErrorAction Stop | Out-Null
+& robocopy (Split-Path $Source -Parent) $DestinationDir 'docker_data.vhdx' /R:0 /W:0 /J /COPY:DAT /NP
+$Code = $LASTEXITCODE
+if ($Code -ge 8) { throw ('Robocopy failed: ' + $Code) }
+if (-not (Test-Path -LiteralPath $Destination -PathType Leaf)) { throw 'Backup missing' }
+if ((Get-Item -LiteralPath $Destination).Length -ne $SrcInfo.Length) { throw 'Backup size mismatch' }
+Write-Host '[03] SHA256 VERIFICATION'
+$OriginalHash = (Get-FileHash -LiteralPath $Source -Algorithm SHA256 -ErrorAction Stop).Hash
+$BackupHash = (Get-FileHash -LiteralPath $Destination -Algorithm SHA256 -ErrorAction Stop).Hash
+if ($OriginalHash -ne $BackupHash) { throw 'SHA256 mismatch: do not use backup' }
+Write-Host '[PASS] Docker VHDX backed up; SHA256 identical; original on C: preserved.'
+Write-Host ('Backup: ' + $Destination)
+Write-Host '[NEXT] Configure Docker Desktop disk image location on F: after separate review.'
