@@ -23,10 +23,18 @@ if ($Volume.SizeRemaining -lt ($SrcInfo.Length + 50GB)) { throw 'Insufficient fr
 if (Test-Path -LiteralPath $DestinationDir) { throw 'Backup folder already exists; refuse overwrite' }
 $processes = @(Get-Process -Name 'com.docker.backend','Docker Desktop','vmmem','vmmemWSL','vmwp' -ErrorAction SilentlyContinue)
 if ($processes.Count -gt 0) { $processes | Select-Object ProcessName,Id | Format-Table; throw 'Virtualization processes detected. Stop Docker and WSL gracefully first.' }
-$running = (& wsl.exe --list --running 2>&1 | Out-String)
-# WSL output may be UTF-16 in an interactive shell; conservative process checks above still apply.
-if ($LASTEXITCODE -ne 0) { throw 'Cannot confirm WSL status' }
-if ($running -match 'Ubuntu|docker-desktop') { throw 'WSL distributions still running' }
+# WSL --list --running may return a nonzero code when no distributions run.
+# The definitive gate is a non-shared file handle on the Docker VHDX.
+Write-Host '[CHECK] Exclusive access to Docker VHDX'
+$handle = $null
+try {
+    $handle = [System.IO.File]::Open($Source, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::None)
+    Write-Host '[PASS] VHDX is not in use by another process'
+} catch {
+    throw ('Docker VHDX is still in use or inaccessible. Quit Docker Desktop and run wsl --shutdown. Error: ' + $_.Exception.Message)
+} finally {
+    if ($null -ne $handle) { $handle.Dispose() }
+}
 Write-Host ('Source {0:N2} GB' -f ($SrcInfo.Length/1GB))
 Write-Host ('Backup destination: ' + $Destination)
 Write-Host '[02] COPYING WITH ROBOCOPY'
